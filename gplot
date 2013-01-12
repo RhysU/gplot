@@ -119,6 +119,7 @@ Examples (see gnuplot documentation for complete GNUPLOTCMD details):
   gplot -f i=2:5 -p foo.png foo.dat using 1:i with points
   gplot -3 restart\*.dat using 1:2:3
   gplot -H 0.01 foo.dat using '(bin(\$1,bw)):(1.0)' smooth frequency with boxes
+  gplot foo.dat using '9:(0.0001)' smooth kdensity
 
 On error, the failing gnuplot script is shown.
 HERE
