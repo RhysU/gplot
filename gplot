@@ -25,7 +25,7 @@ cmd=plot
 forexpr=
 raise=
 showhelp=
-while getopts "3ce:f:ghilp:s:rt:x:y:z:F:LSX:Y:Z:" opt
+while getopts "3ce:f:ghilp:s:rt:x:y:z:F:H:LSX:Y:Z:" opt
 do
   case $opt in
     3) cmd=splot
@@ -64,6 +64,11 @@ do
        ;;
     F) pause="pause $OPTARG; replot; reread"
        ;;
+    H) echo "bw = $OPTARG"                                  >> $tmp2
+       echo "set boxwidth bw"                               >> $tmp2
+       echo "bin(x, width) = width*floor(x/width) + bw/2.0" >> $tmp2
+       echo "set style fill solid 0.5"                      >> $tmp2
+       ;;
     L) echo "set logscale x" >> $tmp2
        ;;
     S) stdin=true
@@ -99,6 +104,7 @@ Use gnuplot to plot one or more files directly from the command line.
   -y YLABEL      Specify YLABEL as the y axis label.
   -z ZLABEL      Specify ZLABEL as the z axis label.
   -F FREQUENCY   Replot the inputs every FREQUENCY seconds.
+  -H BW          Ease making histograms using binwidth BW; see examples.
   -L             Use logarithmic scale for x axis.
   -S             Prior to plotting, read auxililary gunplot from stdin.
   -X XLOW:XHIGH  Specify an explicit x axis range instead of autoscaling.
@@ -112,6 +118,7 @@ Examples (see gnuplot documentation for complete GNUPLOTCMD details):
   gplot -e foo.eps foo.dat using 1:2 with linespoints
   gplot -f i=2:5 -p foo.png foo.dat using 1:i with points
   gplot -3 restart\*.dat using 1:2:3
+  gplot -H 0.01 foo.dat using '(bin(\$1,bw)):(1.0)' smooth frequency with boxes
 
 On error, the failing gnuplot script is shown.
 HERE
