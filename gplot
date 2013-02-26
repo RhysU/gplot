@@ -12,8 +12,8 @@
 set -e
 
 # Create temporary files to hold gnuplot script
-tmp1=`mktemp /tmp/tmp.XXXXXXXXXX`
-tmp2=`mktemp /tmp/tmp.XXXXXXXXXX`
+tmp1=`mktemp "${TMPDIR-/tmp}/tmp.XXXXXXXXXX"`
+tmp2=`mktemp "${TMPDIR-/tmp}/tmp.XXXXXXXXXX"`
 trap "rm -f $tmp1 $tmp2" EXIT
 
 # Process (and then remove) command line options
