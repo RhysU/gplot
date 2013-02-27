@@ -121,6 +121,7 @@ Examples (see gnuplot documentation for complete GNUPLOTCMD details):
   gplot -H 0.01 foo.dat using '(bin(\$1,bw)):(1.0)' smooth frequency with boxes
   gplot foo.dat using '9:(0.0001)' smooth kdensity
 
+Input files compressed by bzip2, gzip, or xz are transparently decompressed.
 On error, the failing gnuplot script is shown.
 HERE
     exit $showhelp
@@ -160,11 +161,18 @@ fi
 declare -i count=0
 for file in "${files[@]}"
 do
+    # Automatically add any required decompresser in a pipeline
+    case $(file -ib "$file") in                                 #(
+        application/x-bzip2\;*) datafile="< bzcat \"$file\""  ;;#(
+        application/x-gzip\;*)  datafile="< zcat  \"$file\""  ;;#(
+        application/x-xz\;*)    datafile="< xzcat \"$file\""  ;;
+        *)                      datafile=$file
+    esac
     count+=1
     if [ $count -eq 1 ]; then
-        echo "$cmd" "$forexpr" \'$file\' $* \\ >> $tmp1
+        echo "$cmd" "$forexpr" \'$datafile\' $* \\ >> $tmp1
     else
-        echo "   "  , "$forexpr" \'$file\' $* \\ >> $tmp1
+        echo "   "  , "$forexpr" \'$datafile\' $* \\ >> $tmp1
     fi
 done
 echo '' >> $tmp1
