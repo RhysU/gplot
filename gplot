@@ -25,7 +25,7 @@ cmd=plot
 forexpr=
 raise=
 showhelp=
-while getopts "3ce:f:ghilp:s:rt:x:y:z:F:H:LSX:Y:Z:" opt
+while getopts "3ce:f:ghilp:s:rt:x:y:z:CF:H:LSX:Y:Z:" opt
 do
   case $opt in
     3) cmd=splot
@@ -61,6 +61,8 @@ do
     y) echo set ylabel \"$OPTARG\" >> $tmp2
        ;;
     z) echo set zlabel \"$OPTARG\" >> $tmp2
+       ;;
+    C) echo "set datafile separator \",\"" >> $tmp2
        ;;
     F) pause="pause $OPTARG; replot; reread"
        ;;
@@ -103,6 +105,7 @@ Use gnuplot to plot one or more files directly from the command line.
   -x XLABEL      Specify XLABEL as the x axis label.
   -y YLABEL      Specify YLABEL as the y axis label.
   -z ZLABEL      Specify ZLABEL as the z axis label.
+  -C             Process comma-separated value (CSV) data.
   -F FREQUENCY   Replot the inputs every FREQUENCY seconds.
   -H BW          Ease making histograms using binwidth BW; see examples.
   -L             Use logarithmic scale for x axis.
