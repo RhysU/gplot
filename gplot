@@ -109,7 +109,7 @@ Use gnuplot to plot one or more files directly from the command line.
   -F FREQUENCY   Replot the inputs every FREQUENCY seconds.
   -H BW          Ease making histograms using binwidth BW; see examples.
   -L             Use logarithmic scale for x axis.
-  -S             Prior to plotting, read auxililary gunplot from stdin.
+  -S             Prior to plotting, read auxililary gnuplot from stdin.
   -X XLOW:XHIGH  Specify an explicit x axis range instead of autoscaling.
   -Y YLOW:YHIGH  Specify an explicit y axis range instead of autoscaling.
   -Z ZLOW:ZHIGH  Specify an explicit z axis range instead of autoscaling.
