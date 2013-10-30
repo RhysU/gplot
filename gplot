@@ -23,9 +23,10 @@ title="`date +%r`: gplot $*"
 terminal="set terminal ${GNUTERM:-x11} title '$title' noenhanced persist"
 cmd=plot
 forexpr=
+grepcmd=
 raise=
 showhelp=
-while getopts "3ce:f:hilp:s:rt:x:y:z:CF:GH:LMSX:Y:Z:" opt
+while getopts "3ce:f:hg:ilp:s:rt:x:y:z:CF:GH:LMSX:Y:Z:" opt
 do
   case $opt in
     3) cmd=splot
@@ -37,6 +38,8 @@ do
        echo set output \"$OPTARG\" >> $tmp2
        ;;
     f) forexpr=" for [$OPTARG] "
+       ;;
+    g) grepcmd="grep \"$OPTARG\""
        ;;
     h) showhelp=0
        ;;
@@ -96,6 +99,7 @@ Use gnuplot to plot one or more files directly from the command line.
   -c             Populate the key using autotitling.
   -e FILE        Save an Encapsulated Postscript (eps) called FILE.
   -f FOREXPR     Prepend a 'for [FOREXPR]' to the plotting command.
+  -g PATTERN     Grep for PATTERN in the input processing only matches.
   -h             Show this help message.
   -i             Interactive plotting mode.  Hit 'h' on plot for help.
   -l             Use logarithmic scale for y axis.
@@ -175,6 +179,14 @@ do
         application/x-xz\;*)    datafile="< xzcat \"$file\""  ;;
         *)                      datafile=$file
     esac
+    # Incorporate any nontrivial grepcmd for this file
+    if test -n "$grepcmd"; then
+        if test \< = ${datafile:0:1}; then
+            datafile+="| $grepcmd"           # Append to pipeline
+        else
+            datafile="< $grepcmd $datafile"  # Begin pipeline
+        fi
+    fi
     count+=1
     if [ $count -eq 1 ]; then
         echo "$cmd" "$forexpr" \'$datafile\' $* \\ >> $tmp1
