@@ -26,7 +26,7 @@ forexpr=
 grepcmd=
 raise=
 showhelp=
-while getopts "3ce:f:hg:ilp:s:rt:x:y:z:CF:GH:LMSX:Y:Z:" opt
+while getopts "3ce:f:g:hij:lp:s:rt:x:y:z:CF:GH:LMSX:Y:Z:" opt
 do
   case $opt in
     3) cmd=splot
@@ -44,6 +44,10 @@ do
     h) showhelp=0
        ;;
     i) pause='pause -1 "Plot interactive until Enter pressed.\nHit h in plot window for help.\n"'
+       ;;
+    j) terminal='set term jpeg enhanced'
+       pause='' # Disable interactive on JPEG output
+       echo set output \"$OPTARG\" >> $tmp2
        ;;
     l) echo "set logscale y" >> $tmp2
        ;;
@@ -102,10 +106,11 @@ Use gnuplot to plot one or more files directly from the command line.
   -g PATTERN     Grep for PATTERN in the input processing only matches.
   -h             Show this help message.
   -i             Interactive plotting mode.  Hit 'h' on plot for help.
+  -j FILE        Save a JPEG image called FILE.
   -l             Use logarithmic scale for y axis.
   -p FILE        Save a Portable Networks Graphics (png) called FILE
   -r             Have the window manager raise the plot window.
-  -s FILE        Save the generated gnuplot as a script called FILE.
+  -s FILE        Save the generated gnuplot commands as a script called FILE.
   -t TITLE       Set TITLE as the plot's title.
   -x XLABEL      Specify XLABEL as the x axis label.
   -y YLABEL      Specify YLABEL as the y axis label.
