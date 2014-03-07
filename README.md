@@ -49,6 +49,6 @@ Examples (see gnuplot documentation for complete GNUPLOTCMD details):
   gplot foo.dat using '9:(0.0001)' smooth kdensity
 
 Input files compressed by bzip2, gzip, or xz are transparently decompressed.
-Variable $GNUTERM, defaulting to x11, controls terminal for on screen plots.
+Variable $GNUTERM, defaulting to "x11 enhanced", sets the gnuplot terminal.
 On error, the failing gnuplot script is shown.
 ```
