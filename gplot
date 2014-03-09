@@ -81,7 +81,7 @@ do
        ;;
     C) echo "set datafile separator \",\"" >> $tmp2
        ;;
-    F) pause="pause $OPTARG; replot; reread"
+    F) pause="pause $OPTARG; reread"
        ;;
     G) echo "set grid" >> $tmp2
        ;;
