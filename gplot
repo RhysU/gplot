@@ -12,14 +12,14 @@
 set -e
 
 # Create temporary files to hold gnuplot script
-tmp1=`mktemp "${TMPDIR-/tmp}/tmp.XXXXXXXXXX"`
-tmp2=`mktemp "${TMPDIR-/tmp}/tmp.XXXXXXXXXX"`
-trap "rm -f $tmp1 $tmp2" EXIT
+tmp1=$(mktemp "${TMPDIR-/tmp}/tmp.XXXXXXXXXX")
+tmp2=$(mktemp "${TMPDIR-/tmp}/tmp.XXXXXXXXXX")
+trap "rm -f \"$tmp1\" \"$tmp2\"" EXIT
 
 # Process (and then remove) command line options
 # Build up any post-terminal processing in tmp2 for later use
 autotitle=
-title="`date +%r`: gplot $*"
+title="$(date +%r): gplot $*"
 terminal="set terminal ${GNUTERM:-x11 enhanced} title '$title' persist"
 cmd=plot
 forexpr=
@@ -42,7 +42,7 @@ do
        ;;
     i) pause='pause -1 "Plot interactive until Enter pressed.\nHit h in plot window for help.\n"'
        ;;
-    l) echo "set logscale y" >> $tmp2
+    l) echo "set logscale y" >> "$tmp2"
        ;;
     o)
        outputfile="${OPTARG##*/}"
@@ -61,47 +61,47 @@ do
            terminal='set term svg dynamic enhanced'
            ;;
          *)
-           echo Output \"$OPTARG\" has unknown extension \"$outputext\" 1>&2
+           echo "Output \"$OPTARG\" has unknown extension \"$outputext\"" 1>&2
            exit 1
            ;;
        esac
        pause='' # Disable interactive on file output
-       echo set output \"$OPTARG\" >> $tmp2
+       echo "set output \"$OPTARG\"" >> "$tmp2"
        ;;
     r) raise="-raise"
        ;;
     s) savescript="$OPTARG"
        ;;
-    t) echo set title \"$OPTARG\" >> $tmp2
+    t) echo "set title \"$OPTARG\"" >> "$tmp2"
        ;;
-    x) echo set xlabel \"$OPTARG\" >> $tmp2
+    x) echo "set xlabel \"$OPTARG\"" >> "$tmp2"
        ;;
-    y) echo set ylabel \"$OPTARG\" >> $tmp2
+    y) echo "set ylabel \"$OPTARG\"" >> "$tmp2"
        ;;
-    z) echo set zlabel \"$OPTARG\" >> $tmp2
+    z) echo "set zlabel \"$OPTARG\"" >> "$tmp2"
        ;;
-    C) echo "set datafile separator \",\"" >> $tmp2
+    C) echo "set datafile separator \",\"" >> "$tmp2"
        ;;
     F) pause="pause $OPTARG; reread"
        ;;
-    G) echo "set grid" >> $tmp2
+    G) echo "set grid" >> "$tmp2"
        ;;
-    H) echo "bw = $OPTARG"                                  >> $tmp2
-       echo "set boxwidth bw"                               >> $tmp2
-       echo "bin(x, width) = width*floor(x/width) + bw/2.0" >> $tmp2
-       echo "set style fill solid 0.5"                      >> $tmp2
+    H) echo "bw = $OPTARG"                                  >> "$tmp2"
+       echo "set boxwidth bw"                               >> "$tmp2"
+       echo "bin(x, width) = width*floor(x/width) + bw/2.0" >> "$tmp2"
+       echo "set style fill solid 0.5"                      >> "$tmp2"
        ;;
-    L) echo "set logscale x" >> $tmp2
+    L) echo "set logscale x" >> "$tmp2"
        ;;
-    M) echo set pm3d map >> $tmp2
+    M) echo set pm3d map >> "$tmp2"
        ;;
     S) stdin=true
        ;;
-    X) echo set xrange \[$OPTARG\] >> $tmp2
+    X) echo "set xrange \[$OPTARG\]" >> "$tmp2"
        ;;
-    Y) echo set yrange \[$OPTARG\] >> $tmp2
+    Y) echo "set yrange \[$OPTARG\]" >> "$tmp2"
        ;;
-    Z) echo set zrange \[$OPTARG\] >> $tmp2
+    Z) echo "set zrange \[$OPTARG\]" >> "$tmp2"
        ;;
   esac
 done
@@ -156,10 +156,10 @@ HERE
 fi
 
 # Set terminal
-echo "$terminal" >> $tmp1
+echo "$terminal" >> "$tmp1"
 
 # Slurp any settings built up during getopt processing
-cat $tmp2 >> $tmp1
+cat "$tmp2" >> "$tmp1"
 
 # Obtain file(s) to plot from first argument using extended globbing
 # Deliberately allow globbing to occur in this assignment
@@ -171,18 +171,18 @@ shift
 if [ "$autotitle" ]; then
     # Use columnheader option iff only one file provided
     if [ ${#files[@]} -eq 1 -a $cmd != splot ]; then
-        echo 'set key autotitle columnheader' >> $tmp1
+        echo 'set key autotitle columnheader' >> "$tmp1"
     else
-        echo 'set key autotitle' >> $tmp1
+        echo 'set key autotitle' >> "$tmp1"
     fi
 else
-    echo 'set key noautotitle' >> $tmp1
+    echo 'set key noautotitle' >> "$tmp1"
 fi
 
 # Possibly slurp standard input for further options
 # FIXME Not working for 'echo foo | gplot'
 if [ "$stdin" ]; then
-    cat <&1 >> $tmp1
+    cat <&1 >> "$tmp1"
 fi
 
 # Build gnuplot script to plot possibly multiple files
@@ -206,16 +206,16 @@ do
     fi
     count+=1
     if [ $count -eq 1 ]; then
-        echo "$cmd" "$forexpr" \'$datafile\' $* \\ >> $tmp1
+        echo "$cmd" "$forexpr" "'$datafile'" "$*" \\ >> "$tmp1"
     else
-        echo "   "  , "$forexpr" \'$datafile\' $* \\ >> $tmp1
+        echo "   "  , "$forexpr" "'$datafile'" "$*" \\ >> "$tmp1"
     fi
 done
-echo '' >> $tmp1
+echo '' >> "$tmp1"
 
 # If requested, add a pause command to the end of the script
 if [ "$pause" ]; then
-    echo "$pause" >> $tmp1
+    echo "$pause" >> "$tmp1"
 fi
 
 # If requested, save the plotting commands as an executable script
@@ -227,4 +227,4 @@ fi
 
 # Generate the plot
 # Display the script when an error occurs to aid debugging
-gnuplot $raise $tmp1 || cat $tmp1
+gnuplot $raise "$tmp1" || cat "$tmp1"
