@@ -208,6 +208,7 @@ if [ "$pause" ]; then
 fi
 
 # If requested, save the plotting commands as an executable script
+# TODO Consider an -S option performing 'save "|cat>>$savescript"'
 if [ "$savescript" ]; then
     echo '#!/usr/bin/env gnuplot' > "$savescript"
     cat "$tmp1" >> "$savescript"
