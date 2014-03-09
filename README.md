@@ -13,6 +13,7 @@ Use gnuplot to plot one or more files directly from the command line.
 
   -3             Perform 3D plotting using gnuplot's splot command.
   -c             Populate the key using autotitling.
+  -e             Turn on enhanced terminal features.
   -f FOREXPR     Prepend a 'for [FOREXPR]' to the plotting command.
   -g PATTERN     Grep for PATTERN in the input processing only matches.
   -h             Show this help message.
@@ -37,7 +38,7 @@ Use gnuplot to plot one or more files directly from the command line.
 
 Examples (see gnuplot documentation for complete GNUPLOTCMD details):
 
-  gplot -c -i foo.dat using 1:2 with linespoints
+  gplot -ec -i foo.dat using 1:2 with linespoints
   gplot -s foo.gp -X 0:1 -Y 0:2 foo.dat using 1:2 with linespoints
   gplot -o foo.eps foo.dat using 1:2 with linespoints
   gplot -f i=2:5 -p foo.png foo.dat using 1:i with points
@@ -46,6 +47,6 @@ Examples (see gnuplot documentation for complete GNUPLOTCMD details):
   gplot foo.dat using '9:(0.0001)' smooth kdensity
 
 Input files compressed by bzip2, gzip, or xz are transparently decompressed.
-Variable $GNUTERM, defaulting to "x11 enhanced", sets the gnuplot terminal.
+Variable $GNUTERM, defaulting to "x11", sets the terminal for on-screen plots.
 On error, the failing gnuplot script is shown.
 ```
