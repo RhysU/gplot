@@ -24,6 +24,7 @@ terminal="set terminal ${GNUTERM:-x11 enhanced} title '$title' persist"
 cmd=plot
 forexpr=
 grepcmd=
+pause=
 raise=
 showhelp=
 while getopts "3cf:g:hilo:s:rt:x:y:z:CF:GH:LMSX:Y:Z:" opt
@@ -212,17 +213,16 @@ do
 done
 echo '' >> $tmp1
 
+# If requested, add a pause command to the end of the script
+if [ "$pause" ]; then
+    echo "$pause" >> $tmp1
+fi
+
 # If requested, save the plotting commands as an executable script
 if [ "$savescript" ]; then
     echo '#!/usr/bin/env gnuplot' > "$savescript"
     cat "$tmp1" >> "$savescript"
     chmod a+x "$savescript"
-fi
-
-# If requested, add a pause command to the end of the script. Notice this was
-# not added to the $savescript as it would be annoying in that context.
-if [ "$pause" ]; then
-    echo "$pause" >> $tmp1
 fi
 
 # Generate the plot
