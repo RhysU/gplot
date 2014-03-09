@@ -31,7 +31,6 @@ Use gnuplot to plot one or more files directly from the command line.
   -H BW          Ease making histograms using binwidth BW; see examples.
   -L             Use logarithmic scale for x axis.
   -M             In conjunction with option -3, employ 'set pm3d map'.
-  -S             Prior to plotting, read auxililary gnuplot from stdin.
   -X XLOW:XHIGH  Specify an explicit x axis range instead of autoscaling.
   -Y YLOW:YHIGH  Specify an explicit y axis range instead of autoscaling.
   -Z ZLOW:ZHIGH  Specify an explicit z axis range instead of autoscaling.
