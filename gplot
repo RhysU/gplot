@@ -25,9 +25,8 @@ cmd=plot
 forexpr=
 grepcmd=
 pause=
-raise=
 showhelp=
-while getopts "3cf:g:hilo:s:rt:x:y:z:CF:GH:LMSX:Y:Z:" opt
+while getopts "3cf:g:hilo:s:t:x:y:z:CF:GH:LMSX:Y:Z:" opt
 do
   case $opt in
     3) cmd=splot
@@ -67,8 +66,6 @@ do
        esac
        pause='' # Disable interactive on file output
        echo "set output \"$OPTARG\"" >> "$tmp2"
-       ;;
-    r) raise="-raise"
        ;;
     s) savescript="$OPTARG"
        ;;
@@ -121,7 +118,6 @@ Use gnuplot to plot one or more files directly from the command line.
   -l             Use logarithmic scale for y axis.
   -o FILE        Save the plot to FILE with type chosen via the extension.
                  Encapsulated postscript (eps), PNG, JPEG, and SVG supported.
-  -r             Have the window manager raise the plot window.
   -s FILE        Save the generated gnuplot commands as a script called FILE.
   -t TITLE       Set TITLE as the plot title.
   -x XLABEL      Specify XLABEL as the x axis label.
@@ -227,4 +223,4 @@ fi
 
 # Generate the plot
 # Display the script when an error occurs to aid debugging
-gnuplot $raise "$tmp1" || cat "$tmp1"
+gnuplot "$tmp1" || cat "$tmp1"

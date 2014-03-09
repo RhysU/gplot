@@ -8,7 +8,6 @@ line](http://agentzlerich.blogspot.com/2011/04/using-gnuplot-from-command-line.h
 but extended greatly from that initial appearance.
 
 ```
-$ gplot -h
 Usage: gplot [OPTION]... (FILE|EXTGLOB) GNUPLOTCMD...
 Use gnuplot to plot one or more files directly from the command line.
 
@@ -21,7 +20,6 @@ Use gnuplot to plot one or more files directly from the command line.
   -l             Use logarithmic scale for y axis.
   -o FILE        Save the plot to FILE with type chosen via the extension.
                  Encapsulated postscript (eps), PNG, JPEG, and SVG supported.
-  -r             Have the window manager raise the plot window.
   -s FILE        Save the generated gnuplot commands as a script called FILE.
   -t TITLE       Set TITLE as the plot title.
   -x XLABEL      Specify XLABEL as the x axis label.
