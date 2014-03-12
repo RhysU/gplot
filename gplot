@@ -102,11 +102,11 @@ do
        ;;
     S) stdin=true
        ;;
-    X) echo "set xrange \[$OPTARG\]" >> "$tmp2"
+    X) echo "set xrange [$OPTARG]" >> "$tmp2"
        ;;
-    Y) echo "set yrange \[$OPTARG\]" >> "$tmp2"
+    Y) echo "set yrange [$OPTARG]" >> "$tmp2"
        ;;
-    Z) echo "set zrange \[$OPTARG\]" >> "$tmp2"
+    Z) echo "set zrange [$OPTARG]" >> "$tmp2"
        ;;
   esac
 done
