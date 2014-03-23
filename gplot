@@ -27,7 +27,7 @@ trap "rm -f \"$tmp1\" \"$tmp2\"" EXIT
 autotitle=
 title="$(date +%r): gplot $*"
 terminal="set terminal ${GNUTERM:-x11} title '$title'"
-cmd=plot
+plotcmd=plot
 forexpr=
 grepcmd=
 pause=
@@ -35,7 +35,7 @@ showhelp=
 while getopts "3cef:g:hilo:s:t:x:y:z:CF:GH:LMX:Y:Z:" opt
 do
   case $opt in
-    3) cmd=splot
+    3) plotcmd=splot
        ;;
     c) autotitle=true
        ;;
@@ -174,7 +174,7 @@ shift
 # Tweak autotitle based on options and incoming argument details
 if [ "$autotitle" ]; then
     # Use columnheader option iff only one file provided
-    if [ ${#files[@]} -eq 1 -a $cmd != splot ]; then
+    if [ ${#files[@]} -eq 1 -a $plotcmd != splot ]; then
         echo 'set key autotitle columnheader' >> "$tmp1"
     else
         echo 'set key autotitle' >> "$tmp1"
@@ -204,7 +204,7 @@ do
     fi
     count+=1
     if [ $count -eq 1 ]; then
-        echo "$cmd" "$forexpr" "'$datafile'" "$*" \\ >> "$tmp1"
+        echo "$plotcmd" "$forexpr" "'$datafile'" "$*" \\ >> "$tmp1"
     else
         echo "   "  , "$forexpr" "'$datafile'" "$*" \\ >> "$tmp1"
     fi
