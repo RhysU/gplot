@@ -8,7 +8,7 @@ line](http://agentzlerich.blogspot.com/2011/04/using-gnuplot-from-command-line.h
 but extended greatly from that initial appearance.
 
 ```
-Usage: gplot [OPTION]... (FILE|EXTGLOB) GNUPLOTCMD...
+Usage: gplot [OPTION]... [GNUPLOTSPEC...] [::: [FILE]...]
 Use gnuplot to plot one or more files directly from the command line.
 
   -3             Perform 3D plotting using gnuplot's splot command.
@@ -36,16 +36,17 @@ Use gnuplot to plot one or more files directly from the command line.
   -Y YLOW:YHIGH  Specify an explicit y axis range instead of autoscaling.
   -Z ZLOW:ZHIGH  Specify an explicit z axis range instead of autoscaling.
 
-Examples (see gnuplot documentation for complete GNUPLOTCMD details):
+Examples (see gnuplot documentation for complete GNUPLOTSPEC details):
 
-  gplot -ec -i foo.dat using 1:2 with linespoints
-  gplot -s foo.gp -X 0:1 -Y 0:2 foo.dat using 1:2 with linespoints
-  gplot -o foo.eps foo.dat using 1:2 with linespoints
-  gplot -f i=2:5 -p foo.png foo.dat using 1:i with points
-  gplot -3 restart\*.dat using '"x":"y":"z"'
-  gplot -H 0.01 foo.dat using '(bin($1,bw)):(1.0)' smooth frequency with boxes
-  gplot foo.dat using '9:(0.0001)' smooth kdensity
+  gplot -eci using 1:2 with linespoints ::: foo.dat
+  gplot -s foo.gp -X 0:1 -Y 0:2 using 1:2 with linespoints ::: foo.dat
+  gplot -c -o foo.eps using 1:2 with linespoints ::: <(head foo.dat | tail)
+  gplot -f i=2:5 -o foo.png using 1:i with points ::: foo.dat
+  gplot -3 using '"x":"y":"z"' ::: restart*.dat
+  gplot -H 0.01 using '(bin($1,bw)):(1.0)' smooth frequency w boxes ::: foo.dat
+  ls -rt | head | gplot using '9:(0.0001)' smooth kdensity
 
+If [::: [FILE]...] is omitted, filenames are read from standard input.
 Input files compressed by bzip2, gzip, or xz are transparently decompressed.
 Variable $GNUTERM, defaulting to "x11", sets the terminal for on-screen plots.
 On error, the failing gnuplot script is shown.
