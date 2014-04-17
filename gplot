@@ -184,7 +184,7 @@ else
     if [ -t 0 ]; then
         echo "$0 warning: reading filenames from terminal input"
     fi
-    readarray -t files
+    readarray -t files # FIXME Bash 4+ only, I think.
 fi
 
 # Tweak autotitle based on options and incoming argument details
