@@ -27,9 +27,9 @@ trap "rm -f \"$tmp1\" \"$tmp2\"" EXIT
 autotitle=
 title="$(date +%r): gplot $*"
 if test -n "$GNUTERM"; then
-    terminal="set terminal ${GNUTERM} title '$title'"
+    terminal="set term ${GNUTERM} title '$title'"
 else
-    terminal="if (strstrt(GPVAL_TERMINALS, 'wxt') > 0) { set terminal wxt title '$title' } else { set terminal x11 title '$title' }"
+    terminal="if (strstrt(GPVAL_TERMINALS, 'wxt') > 0) { set term wxt title '$title' } else { set term x11 title '$title' }"
 fi
 plotcmd=plot
 forexpr=
@@ -60,13 +60,16 @@ do
        outputext="${outputfile##*.}"
        case "$outputext" in
          eps|EPS)
-           terminal='set term postscript eps color dashed rounded'
+           terminal="if (strstrt(GPVAL_TERMINALS, 'epscairo') > 0) { set term epscairo color } else { set term postscript eps color }"
            ;;
          jpeg|JPEG|jpg|JPG)
            terminal='set term jpeg'
            ;;
+         pdf|PDF)
+           terminal="set term pdfcairo color"
+           ;;
          png|PNG)
-           terminal='set term png'
+           terminal="if (strstrt(GPVAL_TERMINALS, 'pngcairo') > 0) { set term pngcairo } else { set term png }"
            ;;
          svg|SVG)
            terminal='set term svg dynamic'
@@ -130,7 +133,7 @@ Use gnuplot to plot one or more files directly from the command line.
   -i             Interactive plotting mode.  Hit 'h' on plot for help.
   -l             Use logarithmic scale for y axis.
   -o FILE        Save the plot to FILE with type chosen via the extension.
-                 Encapsulated postscript (eps), PNG, JPEG, and SVG supported.
+                 Formats EPS, JPEG, PDF, PNG, and SVG supported.
   -s FILE        Save the generated gnuplot commands as a script called FILE.
   -t TITLE       Set TITLE as the plot title.
   -x XLABEL      Specify XLABEL as the x axis label.

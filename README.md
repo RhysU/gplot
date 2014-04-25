@@ -20,7 +20,7 @@ Use gnuplot to plot one or more files directly from the command line.
   -i             Interactive plotting mode.  Hit 'h' on plot for help.
   -l             Use logarithmic scale for y axis.
   -o FILE        Save the plot to FILE with type chosen via the extension.
-                 Encapsulated postscript (eps), PNG, JPEG, and SVG supported.
+                 Formats EPS, JPEG, PDF, PNG, and SVG supported.
   -s FILE        Save the generated gnuplot commands as a script called FILE.
   -t TITLE       Set TITLE as the plot title.
   -x XLABEL      Specify XLABEL as the x axis label.
