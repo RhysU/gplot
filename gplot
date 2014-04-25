@@ -148,7 +148,8 @@ Examples (see gnuplot documentation for complete GNUPLOTSPEC details):
   gplot -s foo.gp -X 0:1 -Y 0:2 using 1:2 with linespoints ::: foo.dat
   gplot -c -o foo.eps using 1:2 with linespoints ::: <(head foo.dat | tail)
   gplot -f i=2:5 -o foo.png using 1:i with points ::: foo.dat
-  gplot -3 using '"x":"y":"z"' ::: restart*.dat
+  gplot -3 using '"x":"y":"z"' ::: restart*.dat  # Escaping of column names...
+  gplot -3 using x:y:z ::: restart*.dat          # ...is done automatically
   gplot -H 0.01 using '(bin(\$1,bw)):(1.0)' smooth frequency w boxes ::: foo.dat
   ls -rt | head | gplot using '9:(0.0001)' smooth kdensity
 
@@ -166,13 +167,26 @@ echo "$terminal" >> "$tmp1"
 # Slurp any settings built up during getopt processing
 cat "$tmp2" >> "$tmp1"
 
+# Build the regular expressions used just below
+
 # Grab plot specification and data files per GNU parallel syntax.  That is,
 #   [SPECIFICATION...] ::: [DATAFILE...]
 # where a missing ::: separator mandates reading lines from standard input.
+# Additionally, quote to using specifications consisting of 2-or-3 column names
+declare -r token='[[:alpha:]][_[:alnum:]]*'
+declare -r usingspec2="^($token):($token)\$"
+declare -r usingspec3="^($token):($token):($token)\$"
 declare -a spec
 while [ $# -gt 0 ]; do
-    [ "$1" = ":::" ] && break
-    spec+=("$1")
+    if   [[ "$1" = ":::" ]]; then
+        break
+    elif [[ "$1" =~ $usingspec2 ]]; then
+        spec+=("\"${BASH_REMATCH[1]}\":\"${BASH_REMATCH[2]}\"")
+    elif [[ "$1" =~ $usingspec3 ]]; then
+        spec+=("\"${BASH_REMATCH[1]}\":\"${BASH_REMATCH[2]}\":\"${BASH_REMATCH[3]}\"")
+    else
+        spec+=("$1")
+    fi
     shift
 done
 declare -a files

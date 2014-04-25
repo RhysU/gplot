@@ -42,7 +42,8 @@ Examples (see gnuplot documentation for complete GNUPLOTSPEC details):
   gplot -s foo.gp -X 0:1 -Y 0:2 using 1:2 with linespoints ::: foo.dat
   gplot -c -o foo.eps using 1:2 with linespoints ::: <(head foo.dat | tail)
   gplot -f i=2:5 -o foo.png using 1:i with points ::: foo.dat
-  gplot -3 using '"x":"y":"z"' ::: restart*.dat
+  gplot -3 using '"x":"y":"z"' ::: restart*.dat  # Escaping of column names...
+  gplot -3 using x:y:z ::: restart*.dat          # ...is done automatically
   gplot -H 0.01 using '(bin($1,bw)):(1.0)' smooth frequency w boxes ::: foo.dat
   ls -rt | head | gplot using '9:(0.0001)' smooth kdensity
 
