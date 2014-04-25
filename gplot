@@ -107,8 +107,6 @@ do
        ;;
     M) echo set pm3d map >> "$tmp2"
        ;;
-    S) stdin=true
-       ;;
     X) echo "set xrange [$OPTARG]" >> "$tmp2"
        ;;
     Y) echo "set yrange [$OPTARG]" >> "$tmp2"
