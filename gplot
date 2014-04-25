@@ -26,7 +26,11 @@ trap "rm -f \"$tmp1\" \"$tmp2\"" EXIT
 # Build up any post-terminal processing in tmp2 for later use
 autotitle=
 title="$(date +%r): gplot $*"
-terminal="set terminal ${GNUTERM:-x11} title '$title'"
+if test -n "$GNUTERM"; then
+    terminal="set terminal ${GNUTERM} title '$title'"
+else
+    terminal="if (strstrt(GPVAL_TERMINALS, 'wxt') > 0) { set terminal wxt title '$title' } else { set terminal x11 title '$title' }"
+fi
 plotcmd=plot
 forexpr=
 grepcmd=
@@ -155,7 +159,7 @@ Examples (see gnuplot documentation for complete GNUPLOTSPEC details):
 
 If [::: [FILE]...] is omitted, filenames are read from standard input.
 Input files compressed by bzip2, gzip, or xz are transparently decompressed.
-Variable \$GNUTERM, defaulting to "x11", sets the terminal for on-screen plots.
+Variable \$GNUTERM, defaulting to "wxt" then "x11", sets the default terminal.
 On error, the failing gnuplot script is shown.
 HERE
     exit $showhelp

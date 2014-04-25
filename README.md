@@ -49,6 +49,6 @@ Examples (see gnuplot documentation for complete GNUPLOTSPEC details):
 
 If [::: [FILE]...] is omitted, filenames are read from standard input.
 Input files compressed by bzip2, gzip, or xz are transparently decompressed.
-Variable $GNUTERM, defaulting to "x11", sets the terminal for on-screen plots.
+Variable $GNUTERM, defaulting to "wxt" then "x11", sets the default terminal.
 On error, the failing gnuplot script is shown.
 ```
