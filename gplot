@@ -29,7 +29,7 @@ title="$(date +%r): gplot $*"
 if test -n "$GNUTERM"; then
     terminal="set term ${GNUTERM} title '$title'"
 else
-    terminal="if (strstrt(GPVAL_TERMINALS, 'wxt') > 0) { set term wxt title '$title' } else { set term x11 title '$title' }"
+    terminal="if (strstrt(GPVAL_TERMINALS, 'wxt') > 0) set term wxt title '$title'; else set term x11 title '$title'"
 fi
 plotcmd=plot
 forexpr=
@@ -60,7 +60,7 @@ do
        outputext="${outputfile##*.}"
        case "$outputext" in
          eps|EPS)
-           terminal="if (strstrt(GPVAL_TERMINALS, 'epscairo') > 0) { set term epscairo color } else { set term postscript eps color }"
+           terminal="if (strstrt(GPVAL_TERMINALS, 'epscairo') > 0) set term epscairo color; else set term postscript eps color"
            ;;
          jpeg|JPEG|jpg|JPG)
            terminal='set term jpeg'
@@ -69,7 +69,7 @@ do
            terminal="set term pdfcairo color"
            ;;
          png|PNG)
-           terminal="if (strstrt(GPVAL_TERMINALS, 'pngcairo') > 0) { set term pngcairo } else { set term png }"
+           terminal="if (strstrt(GPVAL_TERMINALS, 'pngcairo') > 0) set term pngcairo; else set term png"
            ;;
          svg|SVG)
            terminal='set term svg dynamic'
