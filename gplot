@@ -201,9 +201,10 @@ if [ "$1" = ":::" ]; then
     done
 else
     if [ -t 0 ]; then
-        echo "$0 warning: reading filenames from terminal input"
+        echo "$0 warning: reading newline-separated filenames from terminal"
     fi
-    readarray -t files # FIXME Bash 4+ only, I think.
+    while IFS= read -r; do files+=("$REPLY"); done # Bash 3.x-friendly...
+    [[ $REPLY ]] && files+=("$REPLY")              # ...readarray clone
 fi
 
 # Tweak autotitle based on options and incoming argument details
