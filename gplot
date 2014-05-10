@@ -63,7 +63,7 @@ do
            terminal="if (strstrt(GPVAL_TERMINALS, 'epscairo') > 0) set term epscairo color; else set term postscript eps color"
            ;;
          jpeg|JPEG|jpg|JPG)
-           terminal='set term jpeg'
+           terminal="set term jpeg"
            ;;
          pdf|PDF)
            terminal="set term pdfcairo color"
@@ -72,7 +72,7 @@ do
            terminal="if (strstrt(GPVAL_TERMINALS, 'pngcairo') > 0) set term pngcairo; else set term png"
            ;;
          svg|SVG)
-           terminal='set term svg dynamic'
+           terminal="set term svg dynamic"
            ;;
          *)
            echo "Output \"$OPTARG\" has unknown extension \"$outputext\"" 1>&2
@@ -105,7 +105,7 @@ do
        ;;
     L) echo "set logscale x" >> "$tmp2"
        ;;
-    M) echo set pm3d map >> "$tmp2"
+    M) echo "set pm3d map" >> "$tmp2"
        ;;
     X) echo "set xrange [$OPTARG]" >> "$tmp2"
        ;;
