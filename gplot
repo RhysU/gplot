@@ -225,6 +225,9 @@ for file in "${files[@]}"
 do
     # Automatically add any required decompresser in a pipeline
     case $(file -ib "$file") in                                 #(
+        application/bzip2\;*)   datafile="< bzcat \"$file\""  ;;#(
+        application/gzip\;*)    datafile="< zcat  \"$file\""  ;;#(
+        application/xz\;*)      datafile="< xzcat \"$file\""  ;;#(
         application/x-bzip2\;*) datafile="< bzcat \"$file\""  ;;#(
         application/x-gzip\;*)  datafile="< zcat  \"$file\""  ;;#(
         application/x-xz\;*)    datafile="< xzcat \"$file\""  ;;
