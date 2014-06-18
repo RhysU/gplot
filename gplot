@@ -24,18 +24,17 @@ trap "rm -f \"$tmp1\" \"$tmp2\"" EXIT
 
 # Process (and then remove) command line options
 # Build up any post-terminal processing in tmp2 for later use
-invocation="$(date +%r): gplot $*"
-autotitle=
-title=$invocation
+echo "invocation = '$(date +%r): gplot $*'" >> "$tmp1"
 if test -n "$GNUTERM"; then
-    terminal="set term ${GNUTERM} title '$title'"
+    terminal="set term ${GNUTERM} title invocation"
 else
-    terminal="if (strstrt(GPVAL_TERMINALS, 'wxt') > 0) set term wxt title '$title'; else set term x11 title '$title'"
+    terminal="if (strstrt(GPVAL_TERMINALS, 'wxt') > 0) set term wxt title invocation; else set term x11 title invocation"
 fi
-plotcmd=plot
+autotitle=
 forexpr=
 grepcmd=
 pause=
+plotcmd=plot
 showhelp=
 while getopts "3cef:g:hilo:s:t:x:y:z:CF:GH:LMS:X:Y:Z:" opt
 do
@@ -262,7 +261,6 @@ fi
 # If requested, save the plotting commands as an executable script
 if [ "$savescript" ]; then
     echo '#!/usr/bin/env gnuplot' > "$savescript"
-    echo "# $invocation" >> "$savescript"
     cat "$tmp1" >> "$savescript"
     chmod a+x "$savescript"
 fi
@@ -270,7 +268,6 @@ fi
 # If requested, append to plotting commands to a possibly existing file
 if [ "$appendscript" ]; then
     echo '#!/usr/bin/env gnuplot' >> "$appendscript"
-    echo "# $invocation" >> "$appendscript"
     cat "$tmp1" >> "$appendscript"
 fi
 
