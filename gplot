@@ -36,7 +36,7 @@ forexpr=
 grepcmd=
 pause=
 showhelp=
-while getopts "3cef:g:hilo:s:t:x:y:z:CF:GH:LMX:Y:Z:" opt
+while getopts "3cef:g:hilo:s:t:x:y:z:CF:GH:LMS:X:Y:Z:" opt
 do
   case $opt in
     3) plotcmd=splot
@@ -107,6 +107,8 @@ do
        ;;
     M) echo "set pm3d map" >> "$tmp2"
        ;;
+    S) appendscript="$OPTARG"
+       ;;
     X) echo "set xrange [$OPTARG]" >> "$tmp2"
        ;;
     Y) echo "set yrange [$OPTARG]" >> "$tmp2"
@@ -143,6 +145,7 @@ Use gnuplot to plot one or more files directly from the command line.
   -H BW          Ease making histograms using binwidth BW; see examples.
   -L             Use logarithmic scale for x axis.
   -M             In conjunction with option -3, employ 'set pm3d map'.
+  -S FILE        Append the generated gnuplot commands to some FILE.
   -X XLOW:XHIGH  Specify an explicit x axis range instead of autoscaling.
   -Y YLOW:YHIGH  Specify an explicit y axis range instead of autoscaling.
   -Z ZLOW:ZHIGH  Specify an explicit z axis range instead of autoscaling.
@@ -256,11 +259,16 @@ if [ "$pause" ]; then
 fi
 
 # If requested, save the plotting commands as an executable script
-# TODO Consider an -S option performing 'save "|cat>>$savescript"'
 if [ "$savescript" ]; then
     echo '#!/usr/bin/env gnuplot' > "$savescript"
     cat "$tmp1" >> "$savescript"
     chmod a+x "$savescript"
+fi
+
+# If requested, append to plotting commands to a possibly existing file
+if [ "$appendscript" ]; then
+    echo '#!/usr/bin/env gnuplot' >> "$appendscript"
+    cat "$tmp1" >> "$appendscript"
 fi
 
 # Generate the plot
