@@ -14,7 +14,7 @@ set -e
 # Create temporary files to hold gnuplot script
 tmp1=$(mktemp "${TMPDIR-/tmp}/tmp.XXXXXXXXXX")
 tmp2=$(mktemp "${TMPDIR-/tmp}/tmp.XXXXXXXXXX")
-trap "rm -f \"$tmp1\" \"$tmp2\"" EXIT
+builtin trap "rm -f \"$tmp1\" \"$tmp2\"" EXIT
 
 ## TODO Permit controlling these options
 # set termoption font "<fontname>{,<fontsize>}"
