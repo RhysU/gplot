@@ -24,8 +24,9 @@ trap "rm -f \"$tmp1\" \"$tmp2\"" EXIT
 
 # Process (and then remove) command line options
 # Build up any post-terminal processing in tmp2 for later use
+invocation="$(date +%r): gplot $*"
 autotitle=
-title="$(date +%r): gplot $*"
+title=$invocation
 if test -n "$GNUTERM"; then
     terminal="set term ${GNUTERM} title '$title'"
 else
@@ -261,6 +262,7 @@ fi
 # If requested, save the plotting commands as an executable script
 if [ "$savescript" ]; then
     echo '#!/usr/bin/env gnuplot' > "$savescript"
+    echo "# $invocation" >> "$savescript"
     cat "$tmp1" >> "$savescript"
     chmod a+x "$savescript"
 fi
@@ -268,6 +270,7 @@ fi
 # If requested, append to plotting commands to a possibly existing file
 if [ "$appendscript" ]; then
     echo '#!/usr/bin/env gnuplot' >> "$appendscript"
+    echo "# $invocation" >> "$appendscript"
     cat "$tmp1" >> "$appendscript"
 fi
 
