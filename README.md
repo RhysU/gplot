@@ -50,9 +50,9 @@ Examples (see gnuplot documentation for complete GNUPLOTSPEC details):
   ls -rt | head | gplot using '9:(0.0001)' smooth kdensity
   mycalc.x | gplot -p using 1:2:3 w yerrorbars   # mycalc.x prints to stdout
 
+Input FILE(s) compressed by bzip2, gzip, or xz are transparently decompressed.
 If [::: [FILE]...] and [-p] are absent, filenames are read from standard input.
 The [-p] option is incompatible with [-f FOREXPR] and [-F FREQUENCY].
-Input files compressed by bzip2, gzip, or xz are transparently decompressed.
 Variable $GNUTERM, defaulting to "wxt" then "x11", sets the default terminal.
 On error, the failing gnuplot script is shown.
 ```
