@@ -246,7 +246,7 @@ do
     esac
     # Incorporate any nontrivial grepcmd for this file
     if test -n "$grepcmd"; then
-        if [ "$stdin" ]; then
+        if [ "$stdin" ] && [ $datafile = "<cat" ]; then
             datafile="< $grepcmd"            # Begin pipeline without file
         elif test \< = "${datafile:0:1}"; then
             datafile+="| $grepcmd"           # Append to pipeline
