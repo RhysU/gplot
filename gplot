@@ -28,7 +28,7 @@ echo "invocation = '$(date +%r): gplot $*'" >> "$tmp1"
 if test -n "$GNUTERM"; then
     terminal="set term ${GNUTERM} title invocation"
 else
-    terminal="if (strstrt(GPVAL_TERMINALS, 'wxt') > 0) set term wxt title invocation; else set term x11 title invocation"
+    terminal="if (exists(\"GPVAL_TERMINALS\") && (strstrt(GPVAL_TERMINALS, 'wxt') > 0)) set term wxt title invocation; else set term x11 title invocation"
 fi
 autotitle=
 forexpr=
