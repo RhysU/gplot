@@ -36,7 +36,8 @@ grepcmd=
 pause=
 plotcmd=plot
 showhelp=
-while getopts "3cef:g:hilo:s:t:x:y:z:CF:GH:LMS:X:Y:Z:" opt
+stdin=
+while getopts "3cef:g:hilo:ps:t:x:y:z:CF:GH:LMS:X:Y:Z:" opt
 do
   case $opt in
     3) plotcmd=splot
@@ -81,6 +82,8 @@ do
        esac
        pause='' # Disable interactive on file output
        echo "set output \"$OPTARG\"" >> "$tmp2"
+       ;;
+    p) stdin=true
        ;;
     s) savescript="$OPTARG"
        ;;
@@ -134,6 +137,7 @@ Use gnuplot to plot one or more files directly from the command line.
   -l             Use logarithmic scale for y axis.
   -o FILE        Save the plot to FILE with type chosen via the extension.
                  Formats EPS, JPEG, PDF, PNG, and SVG supported.
+  -p             Read data from pipe (stdin) rather than file
   -s FILE        Save the generated gnuplot commands as a script called FILE.
   -t TITLE       Set TITLE as the plot title.
   -x XLABEL      Specify XLABEL as the x axis label.
@@ -160,8 +164,10 @@ Examples (see gnuplot documentation for complete GNUPLOTSPEC details):
   gplot -3 using x:y:z ::: restart*.dat          # ...is done automatically
   gplot -H 0.01 using '(bin(\$1,bw)):(1.0)' smooth frequency w boxes ::: foo.dat
   ls -rt | head | gplot using '9:(0.0001)' smooth kdensity
+  mycalc.x | gplot -p using 1:2:3 w yerrorbars   # mycalc.x prints to stdout
 
-If [::: [FILE]...] is omitted, filenames are read from standard input.
+If [::: [FILE]...] and [-p] are absent, filenames are read from standard input.
+The [-p] option is incompatible with [-f FOREXPR], [-g PATTERN] & [-F FREQUENCY].
 Input files compressed by bzip2, gzip, or xz are transparently decompressed.
 Variable \$GNUTERM, defaulting to "wxt" then "x11", sets the default terminal.
 On error, the failing gnuplot script is shown.
@@ -202,6 +208,8 @@ if [ "$1" = ":::" ]; then
     while shift && [ $# -gt 0 ]; do
         files+=("$1")
     done
+elif [ "$stdin" ]; then 
+    files+=("<cat")
 else
     if [ -t 0 ]; then
         echo "$0 warning: reading newline-separated filenames from terminal"
