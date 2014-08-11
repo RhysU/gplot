@@ -51,7 +51,7 @@ Examples (see gnuplot documentation for complete GNUPLOTSPEC details):
   mycalc.x | gplot -p using 1:2:3 w yerrorbars   # mycalc.x prints to stdout
 
 If [::: [FILE]...] and [-p] are absent, filenames are read from standard input.
-The [-p] option is incompatible with [-f FOREXPR], [-g PATTERN] & [-F FREQUENCY].
+The [-p] option is incompatible with [-f FOREXPR] and [-F FREQUENCY].
 Input files compressed by bzip2, gzip, or xz are transparently decompressed.
 Variable $GNUTERM, defaulting to "wxt" then "x11", sets the default terminal.
 On error, the failing gnuplot script is shown.
