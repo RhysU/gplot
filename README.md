@@ -34,6 +34,7 @@ Use gnuplot to plot one or more files directly from the command line.
   -L             Use logarithmic scale for x axis.
   -M             In conjunction with option -3, employ 'set pm3d map'.
   -S FILE        Append the generated gnuplot commands to some FILE.
+  -T TIMEFMT     Expect temporal x data formatted per 'set timefmt "TIMEFMT"'.
   -X XLOW:XHIGH  Specify an explicit x axis range instead of autoscaling.
   -Y YLOW:YHIGH  Specify an explicit y axis range instead of autoscaling.
   -Z ZLOW:ZHIGH  Specify an explicit z axis range instead of autoscaling.
@@ -44,6 +45,7 @@ Examples (see gnuplot documentation for complete GNUPLOTSPEC details):
   gplot -s foo.gp -X 0:1 -Y 0:2 using 1:2 with linespoints ::: foo.dat
   gplot -c -o foo.eps using 1:2 with linespoints ::: <(head foo.dat | tail)
   gplot -f i=2:5 -o foo.png using 1:i with points ::: foo.dat
+  gplot -C -T %Y%m%d using 1:2 ::: timedata.csv
   gplot -3 using '"x":"y":"z"' ::: restart*.dat  # Escaping of column names...
   gplot -3 using x:y:z ::: restart*.dat          # ...is done automatically
   gplot -H 0.01 using '(bin($1,bw)):(1.0)' smooth frequency w boxes ::: foo.dat
