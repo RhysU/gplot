@@ -44,7 +44,8 @@ do
        ;;
     a) IFS=',' read -ra vlines <<< "$OPTARG"
        for xval in "${vlines[@]}"; do
-           echo "set arrow from first $xval, graph 0 to first $xval, graph 1 nohead lc rgb 'gray'" >> "$tmp2"
+           xval=$(printf "%s" "$xval" | xargs)  # Trim whitespace
+           printf "set arrow from first %s, graph 0 to first %s, graph 1 nohead lc rgb 'gray'\n" "$xval" "$xval" >> "$tmp2"
        done
        ;;
     c) autotitle=true
@@ -102,7 +103,8 @@ do
        ;;
     A) IFS=',' read -ra hlines <<< "$OPTARG"
        for yval in "${hlines[@]}"; do
-           echo "set arrow from graph 0, first $yval to graph 1, first $yval nohead lc rgb 'gray'" >> "$tmp2"
+           yval=$(printf "%s" "$yval" | xargs)  # Trim whitespace
+           printf "set arrow from graph 0, first %s to graph 1, first %s nohead lc rgb 'gray'\n" "$yval" "$yval" >> "$tmp2"
        done
        ;;
     C) echo "set datafile separator \",\"" >> "$tmp2"
