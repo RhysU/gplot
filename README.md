@@ -12,6 +12,7 @@ Usage: gplot [OPTION]... [GNUPLOTSPEC...] [::: [FILE]...]
 Use gnuplot to plot one or more files directly from the command line.
 
   -3             Perform 3D plotting using gnuplot's splot command.
+  -a XVAL[,...]  Draw vertical reference line(s) at specified x value(s).
   -c             Populate the key using autotitling.
   -e             Turn on enhanced terminal features.
   -f FOREXPR     Prepend a 'for [FOREXPR]' to the plotting command.
@@ -27,6 +28,7 @@ Use gnuplot to plot one or more files directly from the command line.
   -x XLABEL      Specify XLABEL as the x axis label.
   -y YLABEL      Specify YLABEL as the y axis label.
   -z ZLABEL      Specify ZLABEL as the z axis label.
+  -A YVAL[,...]  Draw horizontal reference line(s) at specified y value(s).
   -C             Process comma-separated value (CSV) data.
   -F FREQUENCY   Replot the inputs every FREQUENCY seconds.
   -G             Show grid lines.
@@ -49,6 +51,8 @@ Examples (see gnuplot documentation for complete GNUPLOTSPEC details):
   gplot -3 using '"x":"y":"z"' ::: restart*.dat  # Escaping of column names...
   gplot -3 using x:y:z ::: restart*.dat          # ...is done automatically
   gplot -H 0.01 using '(bin($1,bw)):(1.0)' smooth frequency w boxes ::: foo.dat
+  gplot -A 0,1.5 using 1:2 with lines ::: data.dat  # Draw horizontal lines at y=0 and y=1.5
+  gplot -a 2,5 using 1:2 with lines ::: data.dat    # Draw vertical lines at x=2 and x=5
   ls -rt | head | gplot using '9:(0.0001)' smooth kdensity
   mycalc.x | gplot -p using 1:2:3 w yerrorbars   # mycalc.x prints to stdout
 
